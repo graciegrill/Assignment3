@@ -6,15 +6,13 @@ import java.util.Collections;
 
 public class solution{
 
-
-    public static ArrayList<String> prepareDictionary(String fileName){
-        ArrayList<String> dictionary = new ArrayList<String>();
-        //Read dictionary words into a linear data structure (ArrayList)
+    public static ArrayList<String> prepareWords(String fileName){
+        ArrayList<String> words = new ArrayList<String>();
         try{
             File data = new File(fileName);
             Scanner sophon = new Scanner(data);
             while (sophon.hasNextLine()){
-                dictionary.add(sophon.nextLine());
+                words.add(sophon.nextLine());
             }
             sophon.close();
         }
@@ -22,27 +20,9 @@ public class solution{
         catch(FileNotFoundException x){
             System.out.println("File not found");
         }
-        //Ensure dictionary actually sorted
-        Collections.sort(dictionary);
-        return dictionary;
+        return words;
     }
 
-    public static ArrayList<String> prepareTesting(String fileName){
-        ArrayList<String> testing = new ArrayList<String>();
-        try{
-            File data = new File(fileName);
-            Scanner sophon = new Scanner(data);
-            while (sophon.hasNextLine()){
-                testing.add(sophon.nextLine());
-            }
-            sophon.close();
-        }
-        //File error handling
-        catch(FileNotFoundException x){
-            System.out.println("File not found");
-        }
-        return testing;
-    }
     public static int binarySearch(ArrayList<String> dictionary, String target){
         int low = 0;
         int high = dictionary.size()-1;
@@ -63,31 +43,37 @@ public class solution{
 
     }
 
-    public static String organizedSearch(String filename){
+    public static String spell_Check_Version_0(String filename){
         String out = "";
-        ArrayList<String> dictionary = prepareDictionary("dictionary.txt");
-        ArrayList<String> testStrings = prepareTesting("testing.txt");
+        ArrayList<String> dictionary = prepareWords("dictionary.txt");
+        ArrayList<String> testStrings = prepareWords("testing.txt");
+        int lineNumber = 1;
         for(String x:testStrings){
             x = x.toLowerCase();
-            x = x.replaceAll("[^a-zA-Z\s]", "");
+            x = x.replaceAll("[^a-zA-Z\s]", " ");
             x = x.replaceAll("\\s+", " ");
             x = x.trim();
             String[] words = x.split(" ");
             for(String y:words){
+                if(y.isEmpty()){
+                    continue;
+                }
                 int found = binarySearch(dictionary, y);
                 if(found ==-1){
-                    out+=" "+y;
+                    out+=y+" ";
+                    out+=lineNumber+" ";
                 }
                 else{
                     continue;
                 }
             }
+            lineNumber++;
         }
         return out;
     }
 
 
     public static void main(String[] args) {
-        System.out.println(organizedSearch("testing.txt"));
+        System.out.println(spell_Check_Version_0("testing.txt"));
     }
 }
