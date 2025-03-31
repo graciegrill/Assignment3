@@ -2,11 +2,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Collections;
 
 public class solution{
-
-    public static ArrayList<String> prepareWords(String fileName){
+    /**
+     * 
+     * @param fileName
+     * @return
+     */
+    public static ArrayList<String> prepare_Words(String fileName){
         ArrayList<String> words = new ArrayList<String>();
         try{
             File data = new File(fileName);
@@ -23,7 +26,7 @@ public class solution{
         return words;
     }
 
-    public static int binarySearch(ArrayList<String> dictionary, String target){
+    public static int binary_Search(ArrayList<String> dictionary, String target){
         int low = 0;
         int high = dictionary.size()-1;
         while(low<=high){
@@ -43,10 +46,14 @@ public class solution{
 
     }
 
-    public static String spell_Check_Version_0(String filename){
+    public static String spell_Check_Version_1(String filename){
         String out = "";
-        ArrayList<String> dictionary = prepareWords("dictionary.txt");
-        ArrayList<String> testStrings = prepareWords("testing.txt");
+        ArrayList<String> dictionary = prepare_Words("dictionary.txt");
+        ternarySearchTree<Integer> trie = new ternarySearchTree<Integer>();
+        for(int i = 0; i<dictionary.size(); i++){
+            trie.put(dictionary.get(i), i);
+        }
+        ArrayList<String> testStrings = prepare_Words(filename);
         int lineNumber = 1;
         for(String x:testStrings){
             x = x.toLowerCase();
@@ -58,8 +65,8 @@ public class solution{
                 if(y.isEmpty()){
                     continue;
                 }
-                int found = binarySearch(dictionary, y);
-                if(found ==-1){
+                Integer found = trie.get(y);
+                if(found == null){
                     out+=y+" ";
                     out+=lineNumber+" ";
                 }
@@ -72,8 +79,52 @@ public class solution{
         return out;
     }
 
+    public static String spell_Check_Version_0(String filename){
+        String out = "";
+        ArrayList<String> dictionary = prepare_Words("dictionary.txt");
+        ArrayList<String> testStrings = prepare_Words(filename);
+        int lineNumber = 1;
+        for(String x:testStrings){
+            x = x.toLowerCase();
+            x = x.replaceAll("[^a-zA-Z\s]", " ");
+            x = x.replaceAll("\\s+", " ");
+            x = x.trim();
+            String[] words = x.split(" ");
+            for(String y:words){
+                if(y.isEmpty()){
+                    continue;
+                }
+                int found = binary_Search(dictionary, y);
+                if(found ==-1){
+                    out+=y+" ";
+                    out+=lineNumber+" ";
+                }
+                else{
+                    continue;
+                }
+            }
+            lineNumber++;
+        }
+        return out;
+    }
+    public static void checkPrecision(String s1, String s2){
+        if(s1.equals(s2)){
+            System.out.println("Both versions of the spell checker found the same words");
+        }
+        else{
+            System.out.println("Different misspelled words were identified");
+        }
+    }
+
 
     public static void main(String[] args) {
-        System.out.println(spell_Check_Version_0("testing.txt"));
+        String s1 = spell_Check_Version_0("testing.txt");
+        System.out.println(s1);
+        String s2 = spell_Check_Version_1("testing.txt");
+        checkPrecision(s1, s2);
+        /**System.out.println(spell_Check_Version_0("random1000words.txt"));
+        System.out.println(spell_Check_Version_1("random1000words.txt"));
+        System.out.println(spell_Check_Version_0("test_0.txt"));
+        System.out.println(spell_Check_Version_1("test_0.txt"));**/
     }
 }
