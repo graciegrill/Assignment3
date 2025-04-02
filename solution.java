@@ -176,14 +176,14 @@ public class solution{
 
 
     public static void main(String[] args) {
-        /**String s1 = spell_Check_Version_0("testing.txt");
+        String s1 = spell_Check_Version_0("testing.txt");
         System.out.println(s1);
         String s2 = spell_Check_Version_1("testing.txt");
         checkPrecision(s1, s2);
         String s3 = spell_Check_Version_0("random1000words.txt");
         String s4 = spell_Check_Version_1("random1000words.txt");
         System.out.println(s3);
-        checkPrecision(s3, s4);**/
+        checkPrecision(s3, s4);
         String s5 = spell_Check_Version_0("test_0.txt");
         String s6 = spell_Check_Version_1("test_0.txt");
         System.out.println(s5);
