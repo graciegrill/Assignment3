@@ -1,0 +1,1 @@
+I have included all neccessary classes and code for this project in this folder. Additionally, I have included an additional test with more misspelled words so as to test the suggest functionality better. 
