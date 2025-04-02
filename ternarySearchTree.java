@@ -8,7 +8,9 @@ public class ternarySearchTree<Value>{
     }
     public Value get(String key){ // same as for tries (See page 737).
         Node x = get(root, key, 0);
-        if (x == null) return null;
+        if (x == null){
+            return null;
+        } 
         return (Value) x.val;
     }
     private Node get(Node x, String key, int d){
